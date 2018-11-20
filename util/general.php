@@ -7,6 +7,17 @@
         exit("Illegal call to this page.");
     }
 
+    function showDefaultPermission()
+    {
+        $permission = $_SESSION['default_permission'];
+        echo("Authority: ");
+        if ($permission == 3) 
+            echo("Admin");
+        else if ($permission == 2)
+            echo("MODERATOR");
+        else
+            echo("USER");
+    }
     function showUser()
     {
         $username = $_SESSION['username'];
@@ -55,5 +66,12 @@
         $query = "SELECT username FROM user WHERE user_id = '$user_id'";
         $result = $con->query($query) or die($query . '<br/>' . $con->error);
         return $result->fetch_array(MYSQLI_BOTH)['username'];
+    }
+    // go back to last page
+    function goBack()
+    {
+        echo <<< EOT
+        <button onclick="history.back();">Back</button>
+EOT;
     }
 ?>
