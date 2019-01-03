@@ -17,11 +17,15 @@
 
     $post_name = $_POST['title'];
     $post_name = addslashes($post_name);
+    $post_name = $con->real_escape_string($post_name);
     $content = $_POST['content'];
     $content = addslashes($content);
+    $content = $con->real_escape_string($content);
+    $img = $_POST['img'];
+    $img = addslashes($img);
     $now = date('Y-m-d H:i:s', time());
-    $query = "INSERT INTO post(user_id, board_id, post_name, create_time, last_update, content) ";
-    $query .= "VALUES ('$user_id', '$board_id', '$post_name', '$now', '$now', '$content')";
+    $query = "INSERT INTO post(user_id, board_id, post_name, create_time, last_update, content, img) ";
+    $query .= "VALUES ('$user_id', '$board_id', '$post_name', '$now', '$now', '$content', '$img')";
 
     $con->query($query) or die($query . '<br/>' . $con->error);
 

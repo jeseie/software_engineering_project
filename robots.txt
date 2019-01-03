@@ -1,0 +1,6 @@
+# robots.txt to deny the robots access
+
+User-agent: *
+Disallow: /temp
+Disallow: /.DS_Store
+Disallow: /.git

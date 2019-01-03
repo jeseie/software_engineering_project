@@ -1,3 +1,4 @@
+<!--WTF-->
 <?php
     include("../util/constant.php");
     include("../util/connect.php");
@@ -59,6 +60,10 @@ EOT;
                     <label for="content">Content :</label>
                     <textarea class="form-control input-block" id="content" name="content" rows=6></textarea>
                 </p>
+                <p>
+                    <label for="image">Image :</label>
+                    <textarea class="form-control input-block" id="img" name="img" rows=1></textarea>
+                </p>
                 <input class="btn btn-primary" type="submit" name="submit" value="Post!">
             </form>
 EOT;
@@ -93,7 +98,7 @@ EOT;
 			<?php showPosts($board_id, $user_id, $permission); ?>
 			<?php showPostInput($board_id, $permission); ?>
 			<footer class="footer">
-			    <? goBack();?>
+			    <?php goBack();?>
 			</footer>
 		</div>
 	</body>
