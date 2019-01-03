@@ -19,7 +19,9 @@
         $post_name = $result['post_name'];
         $post_name = htmlspecialchars($post_name);
         $content = $result['content'];
+        $content = htmlspecialchars($content);
         $img = $result['img'];
+        $img = htmlspecialchars($img);
         $create_time = $result['create_time'];
         $post_user_id = $result['user_id'];
     }
@@ -35,6 +37,8 @@
         
         $author_name = getUsername($author_id);
         $author_name = htmlspecialchars($author_name);
+        $content = htmlspecialchars($content);
+        $img = htmlspecialchars($img);
         if ($count == 0)
             $id = "Host &nbsp;";
         else if ($count == 1)

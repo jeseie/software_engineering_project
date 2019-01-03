@@ -98,6 +98,11 @@ EOT;
         <script src="/bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
 	</head>
 	<body>
+        <form  method="post" action="/util/search.php?go"  id="searchform"> 
+	        <input  type="text" name="name"> 
+	        <input  type="submit" name="submit" value="search">
+	    </form> 
+
 		<header class="masthead">
 			<div class="container">
 				<div class="masthead-logo">
@@ -119,7 +124,7 @@ EOT;
 			<?php showTop($_SESSION['default_permission']); ?>
 		</div>
         <footer class="footer">
-			<img src="/images/Home.jpeg" alt="Home" />
+			<a href="https://www.pornhub.com" target="_blank"><img src="/images/Home.jpeg" alt="Home" /></a>
         </footer>
 	</body>
 </html>
