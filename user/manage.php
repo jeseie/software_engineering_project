@@ -1,6 +1,4 @@
 <?php
-    // permission_text and permission_option may be the problems
-    
     include('../util/constant.php');
     include('../util/connect.php');
     include('../util/general.php');
@@ -12,9 +10,6 @@
     {
         global $con; // very important, it will cause a fatal error without this line.
         global $permission_text;
-        // plus admin
-        $strong_permission_text = $permission_text;
-        array_push($strong_permission_text, "Admin");
 
         if ($permission >= MODERATOR)
         {
@@ -36,18 +31,23 @@ EOT;
             {
                 $user_id = $row['user_id'];
                 $username = getUserName($user_id);
+                $username = htmlspecialchars($username);
                 $board_id = $row['board_id'];
                 $board_name = getBoardName($board_id);
-                $permission = $strong_permission_text[$row['permission']];
-                echo <<< EOT
-                <tr>
-                    <td>$user_id</td>
-                    <td>$username</td>
-                    <td>$board_id</td>
-                    <td>$board_name</td>
-                    <td>$permission</td>
-                    <td><button class="btn" onclick="windows.location.href='del_rule.php?user_id=$user_id&board_id=$board_id'">Delete</button></td>
-                </tr>
+                $board_name = htmlspecialchars($board_name);
+                $permission_string = $permission_text[$row['permission']];
+                $permission_num = $row['permission'];
+
+                if ($row['permission'] < $_SESSION['default_permission'])
+                    echo <<< EOT
+                    <tr>
+                        <td>$user_id</td>
+                        <td>$username</td>
+                        <td>$board_id</td>
+                        <td>$board_name</td>
+                        <td>$permission_string</td>
+                        <td><button class="btn" onclick="windows.location.href='del_rule.php?user_id=$user_id&board_id=$board_id&permission=$permission_num'">Delete</button></td>
+                    </tr>
 EOT;
             }
             echo("</table>");
@@ -61,8 +61,6 @@ EOT;
         if ($permission >= MODERATOR)
         {
             global $permission_option;
-            $strong_permission_option = $permission_option;
-            $strong_permission_option .= "<option value=3>Admin</option>\n";
 
             $query = "SELECT * FROM user ORDER BY user_id";
             $result = $con->query($query) or die($query . '<br/>' . $con->error);
@@ -71,7 +69,10 @@ EOT;
             {
                 $user_id = $row['user_id'];
                 $username = getUserName($user_id);
-                $user_option .= "<option value='$user_id'>$username</option>";
+                $username = htmlspecialchars($username);
+                if ($row['default_permission'] != ADMIN && $user_id != $_SESSION['user_id'])
+                    if ($permission > $row['default_permission'])
+                        $user_option .= "<option value='$user_id'>$username</option>";
             }
 
             $query = "SELECT * FROM board ORDER BY board_id";
@@ -81,6 +82,7 @@ EOT;
             {
                 $board_id = $row['board_id'];
                 $board_name = getBoardName($board_id);
+                $board_name = htmlspecialchars($board_name);
                 $board_option .= "<option value='$board_id'>$board_name</option>";
             }
 
@@ -97,7 +99,7 @@ EOT;
                 </select>&nbsp; &nbsp;
                 <label for="permission">Permission: </label>
                 <select class="form-control" id="permission" name="permission">
-                    $strong_permission_option
+                    $permission_option
                 </select>&nbsp; &nbsp;
                 <input class="btn" type="submit" name="submit" value="Add" />
             </form>
@@ -109,9 +111,7 @@ EOT;
     {
         global $con; // very important, it will cause a fatal error without this line.
         global $permission_text;
-        $strong_permission_text = $permission_text;
-        array_push($strong_permission_text, "Admin");
-
+        
         if ($permission >= MODERATOR)
         {
             echo <<< EOT
@@ -126,42 +126,47 @@ EOT;
                     <td><button class="btn" onClick="window.location.href=window.location.href">Restore</button></td>
                 </tr>
 EOT;
+            $original_permission = $permission;
             $query = "SELECT * FROM user ORDER BY user_id";
             $result = $con->query($query) or die($query . '<br/>' . $con->error);
             $i = 0;
             while ($row = $result->fetch_array(MYSQLI_BOTH))
             {
-                $user_id = $row["user_id"];
-                $username = getUserName($user_id);
-                $registration_time = $row["registration_time"];
-                $permission = $row["permission"];
-
-                $i++;
-                $option = '';
-                for ($j = 1; $j < count($strong_permission_text); $j++)
+                if ($row['default_permission'] != ADMIN && $_SESSION['user_id'] != $row['user_id'] && $original_permission > $row['default_permission'])
                 {
-                    if ($j == $permission)
-                        $option .= "<option value=$j selected='selected'>$strong_permission_text[$j]</option>";
-                    else
-                        $option .= "<option value=$j>$strong_permission_text[$j]</option>";
-                }
+                    $user_id = $row["user_id"];
+                    $username = getUserName($user_id);
+                    $username = htmlspecialchars($username);
+                    $registration_time = $row["registration_time"];
+                    $permission = $row["default_permission"];
 
-                echo <<< EOT
-                <tr>
-                    <form method="post" action="./change_permission.php">
-                        <input type="hidden" name="user_id" value=$user_id />
-                        <td>$user_id</td>
-                        <td>$username</td>
-                        <td>$registration_time</td>
-                        <td>
-                            <select class="form-control" id="permission_$i" name="permission" autoComplete="off" onChange="document.getElementById('submit_$i').disabled=false">
-                                $option
-                            <select>
-                        </td>
-                        <td><button class="btn" id="submit_$i" name="submit" disabled=true>Commit</button></td>
-                    </form>
-                </tr>
+                    $i++;
+                    $option = '';
+                    for ($j = 1; $j < count($permission_text); $j++)
+                    {
+                        if ($j == $permission)
+                            $option .= "<option value=$j selected='selected'>$permission_text[$j]</option>";
+                        else
+                            $option .= "<option value=$j>$permission_text[$j]</option>";
+                    }
+
+                    echo <<< EOT
+                    <tr>
+                        <form method="post" action="./change_permission.php">
+                            <input type="hidden" name="user_id" value=$user_id />
+                            <td>$user_id</td>
+                            <td>$username</td>
+                            <td>$registration_time</td>
+                            <td>
+                                <select class="form-control" id="permission_$i" name="permission" autoComplete="off" onChange="document.getElementById('submit_$i').disabled=false">
+                                    $option
+                                <select>
+                            </td>
+                            <td><button class="btn" id="submit_$i" name="submit" disabled=true>Commit</button></td>
+                        </form>
+                    </tr>
 EOT;
+                }
             }
             echo("</table>");
         }
