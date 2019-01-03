@@ -21,10 +21,10 @@
 		<header class="masthead">
 			<div class="container">
 				<div class="masthead-logo">
-					<h4>NTUST-ptt</h4>
+					NTUST-ptt
 				</div>
 				<nav class="masthead-nav">
-					<a class="btn btn-outline-light btn-sm" href="/index.php">Back</a>
+                    <a class="btn btn-outline-light btn-sm" href="/index.php">Back</a>
 				</nav>
 			</div>
 		</header>
@@ -32,7 +32,7 @@
 		<div class="container markdown-body">
 			<h1 class="page-title">Register a new account</h1>
 			<form method="post" action="_register.php" onSubmit="return inputCheck()">
-				<div>
+            <div>
 					<label for="username">Username :</label>
 					<input class="form-control col-lg-5" id="username" name="username" type="text" />
 				</div>
@@ -50,8 +50,8 @@
 					<select class="form-control col-lg-2" id="permission" name="permission" autoComplete="off" onChange="permissionText(this)">
 						<?php echo($option); ?>
 					</select>
-				</div>
-				
+                </div>
+                
 				<!-- <input class="btn" type="submit" name="submit" value="Register" /> -->
                 <div><br>
                     <button type="submit" name="submit" class="btn btn-outline-light btn-sm">Register</button>

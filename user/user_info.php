@@ -1,24 +1,21 @@
 <?php
-    include("../header.php");
-    // include('../util/constant.php');
-    // include('../util/connect.php');
-    // include('../util/general.php');
-        
+	include("../header.php");
+
     $user_id = $_SESSION['user_id'];
     $username = $_SESSION['username'];
     $permission = $_SESSION['default_permission'];
     $registration_time = $_SESSION['registration_time'];
 ?>
 
-<!-- <!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en-US">
 	<head>
 		<title>NTUST-ptt - <?php echo($username); ?></title>
 		<link href="/css/style.css" rel="stylesheet" />
         <link href="/bootstrap-4.1.3-dist/css/bootstrap.min.css" />
         <script src="/bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
-	</head> -->
-	<!-- <body>
+	</head>
+	<body>
         <header class="masthead">
             <div class="container">
                 <div class="row">
@@ -26,14 +23,14 @@
                         NTUST-ptt
                     </div>
                     <div class="masthead-nav col-md-8">
-                        <a href="/ptt/home.php">Home</a>Important to turn bbs folder to ptt
+                        <a href="/ptt/home.php">Home</a> Important to turn bbs folder to ptt
                         <?php showUserManagement($_SESSION['default_permission']); ?>
                         <a href="/user/user_info.php"><?php showUser(); ?></a>
                         <a href="/logout.php">Log out</a>
                     </div>
                 </div>
             </div>
-        </header> -->
+        </header>-->
 		
 		<div class="container markdown-body">
 			<div class="row">

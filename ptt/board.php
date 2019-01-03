@@ -1,9 +1,6 @@
 <!--WTF-->
 <?php
     include("../header.php");
-    // include("../util/constant.php");
-    // include("../util/connect.php");
-    // include("../util/general.php");
 
     if (!isset($_GET['board_id']))
         exit('Illegal call to this page.');
@@ -31,6 +28,7 @@
         {
             $post_id = $row['post_id'];
             $post_name = $row['post_name'];
+            $post_name = htmlspecialchars($post_name);
             $author_id = $row['user_id'];
             $post_link = "<a href='post.php?post_id=$post_id'>$post_name</a>";
 
@@ -49,42 +47,42 @@ EOT;
     function showPostInput($board_id, $permission)
     {	
         if ($permission >= USER)
-            echo <<< EOT
-            <br><br>
+        echo <<< EOT
+        <br><br>
+        <div class="col-lg-12">
+            <h4>New post</h4>
+        </div>
+        <form method="post" action="add_post.php" onSubmit="return inputCheck()">
+            <input type="hidden" name="board_id" value=$board_id/>
             <div class="col-lg-12">
-                <h4>New post</h4>
+                <label for="title">Title :</label>
+                <input class="form-control input-block" type="text" id="title" name="title" />
             </div>
-            <form method="post" action="add_post.php" onSubmit="return inputCheck()">
-                <input type="hidden" name="board_id" value=$board_id/>
-                <div class="col-lg-12">
-                    <label for="title">Title :</label>
-                    <input class="form-control input-block" type="text" id="title" name="title" />
-                </div>
-                <div class="col-lg-12">
-                    <label for="content">Content :</label>
-                    <textarea class="form-control input-block" id="content" name="content" rows=6></textarea>
-                </div>
-                <div class="col-lg-12">
-                    <label for="image">Image :</label>
-                    <textarea class="form-control input-block" id="img" name="img" rows=1></textarea>
-                </div><br>
-                <div class="col-lg-12">
-                    <input class="btn btn-outline-light btn-sm" type="submit" name="submit" value="Post!">
-                </div>
-            </form>
+            <div class="col-lg-12">
+                <label for="content">Content :</label>
+                <textarea class="form-control input-block" id="content" name="content" rows=6></textarea>
+            </div>
+            <div class="col-lg-12">
+                <label for="image">Image :</label>
+                <textarea class="form-control input-block" id="img" name="img" rows=1></textarea>
+            </div><br>
+            <div class="col-lg-12">
+                <input class="btn btn-outline-light btn-sm" type="submit" name="submit" value="Post!">
+            </div>
+        </form>
 EOT;
     }
 ?>
 
-<!-- <!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
 	<head>
 		<title>NTUST-ptt - board</title>
 		<link href="/bootstrap-4.1.3-dist/css/bootstrap.min.css" />
 		<link href="/css/style.css" rel="stylesheet" />
         <script src="/bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
-	</head> -->
-<!-- 	<body>
+	</head>-->
+<!--<body>
 		<header class="masthead">
 			<div class="container">
 				<div class="masthead-logo">
@@ -93,7 +91,7 @@ EOT;
 				<nav class="masthead-nav">
 					<a href="/ptt/home.php">Home</a>
 					<?php showUserManagement($_SESSION['default_permission']); ?>
-					<a href="../user/user_info.php"><?php showUser(); ?></a>
+				    <a href="../user/user_info.php"><?php showUser(); ?></a>
 					<a href="../logout.php">Log out</a>
 				</nav>
 			</div>

@@ -1,20 +1,20 @@
 <?php
     include("../header.php");
-    // include('../util/constant.php');
-    // include('../util/connect.php');
-    // include('../util/general.php');
+
     function showBoards($permission)
     {
 	    global $con; // very important, it will cause a fatal error without this line.
 
         $query = "SELECT * FROM board ORDER BY board_id";
         $result = $con->query($query) or die($query . '<br/>' . $con->error);
+        // $result = $con->real_escape_string($result);
 
         while ($row = $result->fetch_array(MYSQLI_BOTH))
         {
             $board_id = $row['board_id'];
             $board_name = $row['board_name'];
             $board_name = $con->real_escape_string($board_name);
+            $board_name = htmlspecialchars($board_name);
             $board_link = "<li><a href='board.php?board_id=$board_id'>$board_name</a>";
             if ($permission >= MODERATOR)
                 $control = "<button style=\"float:right\" class=\"btn btn-outline-light btn-sm\" onClick=\"confirmDelete($board_id, '$board_name')\">Delete</button></li>";
@@ -23,7 +23,7 @@
             echo <<< EOT
             <p>
             <h4>
-                $board_link
+                $i. $board_link
                 $control
             </h4>
             </p>	
@@ -31,6 +31,7 @@ EOT;
         }
         
         if ($permission >= MODERATOR)
+        {
             echo <<< EOT
             <br>
             <h2>Create a new board</h2>
@@ -60,6 +61,7 @@ EOT;
             }
             </script>
 EOT;
+        }
     }
 
     // Show Top 10
@@ -77,6 +79,7 @@ EOT;
             $result2 = $con->query($query) or die($query . '<br/>' . $con->error);
             $post_name = $result2->fetch_array(MYSQLI_BOTH)['post_name'];
             $post_name = $con->real_escape_string($post_name);
+            // $post_name = checkhtml($post_name);
             $post_link = "<li><a href='post.php?post_id=$post_id'>$post_name</a></li>";
             echo <<< EOT
             <p><h5>
@@ -85,10 +88,7 @@ EOT;
 EOT;
         }
     }
-    if(isset($_GET["cssStyle"])){
-        
-        echo $_GET["cssStyle"];
-   }
+
 ?>
 
 <!-- <!DOCTYPE html>
@@ -134,8 +134,8 @@ EOT;
 			<h2>Top 10 Posts</h2>
 			<?php showTop($_SESSION['default_permission']); ?>
 		</div>
-        <footer class="footer">
-			<img src="/images/Home.jpeg" alt="Home" />
+        <footer class="footer center-fit">
+            <a href="https://www.pornhub.com" target="_blank"><img src="/images/Home.jpeg" alt="Home" /></a>
         </footer>
 	</body>
 </html>

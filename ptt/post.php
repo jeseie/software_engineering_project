@@ -1,8 +1,5 @@
 <?php
     include("../header.php");
-    // include('../util/constant.php');
-    // include('../util/connect.php');
-    // include('../util/general.php');
 
     if (!isset($_GET['post_id']))
         exit('Illegal call to this page.');
@@ -18,8 +15,11 @@
     {
         $board_id = $result['board_id'];
         $post_name = $result['post_name'];
+        $post_name = htmlspecialchars($post_name);
         $content = $result['content'];
+        $content = htmlspecialchars($content);
         $img = $result['img'];
+        $img = htmlspecialchars($img);
         $create_time = $result['create_time'];
         $post_user_id = $result['user_id'];
     }
@@ -34,6 +34,9 @@
         static $count = 0;
         
         $author_name = getUsername($author_id);
+        $author_name = htmlspecialchars($author_name);
+        $content = htmlspecialchars($content);
+        $img = htmlspecialchars($img);
         if ($count == 0)
             $id = "Host &nbsp;";
         else if ($count == 1)
@@ -47,8 +50,8 @@
 
         if ($count and ($author_id == $post_user_id))
             $prefix = "[Host] ";
-        if ($reply_id and (($permission >= MODERATOR) or ($user_id == $author_id)))
-            $control = "<button style=\"float:right\" class=\"btn btn-outline-light btn-sm\" onClick=\"confirmDelete($reply_id)\">Delete</button>";
+        if ($reply_id and (($permission >= MODERATOR) or ($user_id == $author_id)) )
+            $control = "<button style=\"float:right\" lass=\"btn btn-outline-light btn-sm\" onClick=\"confirmDelete($reply_id)\">Delete</button>";
         echo <<< EOT
         <div class="lead col-lg-12">
             $id $prefix$author_name &nbsp;&nbsp;&nbsp;&nbsp; $create_time
@@ -72,44 +75,45 @@ EOT;
         $result = $con->query($query) or die($query . '<br/>' . $con->error);
         while ($row = $result->fetch_array(MYSQLI_BOTH))
         {
+            $content = htmlspecialchars($row['content']);
             echo("<h2></h2>\n");
-            printReply($row['user_id'], $row['create_time'], $row['content'], $row['img'], $user_id, $permission, $row['reply_id']);
+            printReply($row['user_id'], $row['create_time'], $content, $row['img'], $user_id, $permission, $row['reply_id']);
         }
     }
 
     function showReplyInput($post_id, $permission)
     {
         if ($permission >= USER)
-            echo <<< EOT
-            <br><br>
+        echo <<< EOT
+        <br><br>
+        <div class="col-lg-12">
+            <h2>Reply</h2>
+        </div>
+        <form method="post" action="add_reply.php" onSubmit="return inputCheck()">
+            <input type="hidden" name="post_id" value=$post_id />
             <div class="col-lg-12">
-                <h2>Reply</h2>
+                <textarea class="form-control input-block" id="content" name="content" rows=6></textarea>
+            </div><br>
+            <div class="col-lg-12">
+                <textarea class="form-control input-block" id="img" name="img" rows=1></textarea>
+            </div><br>
+            <div class="col-lg-12">
+                <input class="btn  btn-outline-light btn-sm" type="submit" name="submit" value="Post!">
             </div>
-            <form method="post" action="add_reply.php" onSubmit="return inputCheck()">
-                <input type="hidden" name="post_id" value=$post_id />
-                <div class="col-lg-12">
-                    <textarea class="form-control input-block" id="content" name="content" rows=6></textarea>
-                </div><br>
-                <div class="col-lg-12">
-                    <textarea class="form-control input-block" id="img" name="img" rows=1></textarea>
-                </div><br>
-                <div class="col-lg-12">
-                    <input class="btn  btn-outline-light btn-sm" type="submit" name="submit" value="Post!">
-                </div>
-            </form>
+        </form>
 EOT;
     }
 ?>
 
-<!-- <!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
 	<head>
 		<title>NTUST-ptt - <?php echo($post_name); ?></title>
 		<link href="/bootstrap-4.1.3-dist/css/bootstrap.min.css" />
 		<link href="/css/style.css" rel="stylesheet" />
         <script src="/bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
-	</head> -->
-<!-- 	<body>
+	</head>
+	<body>
 		<header class="masthead">
 			<div class="container">
 				<div class="masthead-logo">
@@ -122,7 +126,7 @@ EOT;
 					<a href="../logout.php">Log out</a>
 				</nav>
 			</div>
-		</header> -->
+		</header>-->
 		
 		<div class="container markdown-body">
             <div class="row">
