@@ -22,7 +22,10 @@ table
 
 hr
 {
-    background-color: rgb(255, 243, 77);
+    border: 0;
+    height: 1px;
+    background: white;
+    background-image: linear-gradient(to right, #333, rgb(255, 255, 255), #333);
 }
 
 .header_title{

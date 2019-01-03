@@ -48,7 +48,7 @@
         if ($count and ($author_id == $post_user_id))
             $prefix = "[Host] ";
         if ($reply_id and (($permission >= MODERATOR) or ($user_id == $author_id)))
-            $control = "<button style=\"float:right\" class=\"btn btn-sm btn-danger\" onClick=\"confirmDelete($reply_id)\">Delete</button>";
+            $control = "<button style=\"float:right\" class=\"btn btn-outline-light btn-sm\" onClick=\"confirmDelete($reply_id)\">Delete</button>";
         echo <<< EOT
         <div class="lead col-lg-12">
             $id $prefix$author_name &nbsp;&nbsp;&nbsp;&nbsp; $create_time

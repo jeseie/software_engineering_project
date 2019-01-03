@@ -35,7 +35,7 @@
             $post_link = "<a href='post.php?post_id=$post_id'>$post_name</a>";
 
             if (($permission >= MODERATOR) or ($user_id == $author_id))
-                $control = "<button style=\"float:right\" class=\"btn btn-sm btn-danger\" onClick=\"confirmDelete($post_id, '$post_name')\">Delete</button>";
+                $control = "<button style=\"float:right\" class=\"btn btn-outline-light btn-sm\" onClick=\"confirmDelete($post_id, '$post_name')\">Delete</button>";
             echo <<< EOT
             <p>
             <h5>
