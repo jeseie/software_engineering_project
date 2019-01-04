@@ -23,7 +23,7 @@
             echo <<< EOT
             <p>
             <h4>
-                $i. $board_link
+                $board_link
                 $control
             </h4>
             </p>	
@@ -133,9 +133,11 @@ EOT;
             <br>
 			<h2>Top 10 Posts</h2>
 			<?php showTop($_SESSION['default_permission']); ?>
+            <div class="row">
+                <div class="col-lg-12">
+                    <img style="align-content: right;" src="/images/Home.jpeg" alt="Home" />
+                </div>
+            </div>
 		</div>
-        <footer class="footer center-fit">
-            <a href="https://www.pornhub.com" target="_blank"><img src="/images/Home.jpeg" alt="Home" /></a>
-        </footer>
 	</body>
 </html>
