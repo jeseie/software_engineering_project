@@ -135,7 +135,7 @@ EOT;
 			<?php showTop($_SESSION['default_permission']); ?>
             <div class="row">
                 <div class="col-lg-12">
-                    <img style="align-content: right;" src="/images/Home.jpeg" alt="Home" />
+                    <img style="display:block; margin:auto;" src="/images/Home.jpeg" alt="Home" />
                 </div>
             </div>
 		</div>
