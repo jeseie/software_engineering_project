@@ -37,9 +37,9 @@ EOT;
                 $board_name = getBoardName($board_id);
                 $board_name = htmlspecialchars($board_name);
                 $permission_string = $permission_text[$row['permission']];
-                $permission_num = $row['permission'];
-
+                
                 if ($row['permission'] < $_SESSION['default_permission'])
+                {
                     echo <<< EOT
                     <tr>
                         <td class="col-xs-2">$user_id</td>
@@ -47,9 +47,10 @@ EOT;
                         <td class="col-xs-2">$board_id</td>
                         <td class="col-xs-2">$board_name</td>
                         <td class="col-xs-2">$permission_string</td>
-                        <td class="col-xs-2"><button class="btn btn-outline-light btn-sm" onclick="windows.location.href='del_rule.php?user_id=$user_id&board_id=$board_id&permission=$permission_num'">Delete</button></td>
+                        <td class="col-xs-2"><button class="btn btn-outline-light btn-sm" onclick="link($user_id, $board_id);">Delete</button></td>
                     </tr>
 EOT;
+                }
             }
             echo("</table></div>");
         }
@@ -229,5 +230,12 @@ EOT;
             We are the best!
         </footer> -->
     </div>
+
+    <script>
+        function link ($user_id, $board_id){ 
+            if (confirm("Do you really want to delete the rule?") )
+                window.location.assign('del_rule.php?user_id=' + $user_id.toString() + '&board_id=' + $board_id.toString());
+        } 
+    </script>
 </body>
 </html>
